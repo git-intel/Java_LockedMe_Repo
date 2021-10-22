@@ -221,15 +221,15 @@ public class LockedMe {
 
 				System.out.println("\n" + fileList.length + " files present in this folder");
 				System.out.println("\n" + dirList.length + " Sub directories present in this folder");
-				
+
 				System.out.println("Enter the file name: ");
 				String filename = scanner.nextLine();
-	            // Using file pointer creating the file. 
-	            File newfile = new File(folder,filename); 
-	  
-	            if (!newfile.exists()) { 
-	            	newfile.createNewFile();
-	            } 
+				// Using file pointer creating the file.
+				File newfile = new File(folder, filename);
+
+				if (!newfile.exists()) {
+					newfile.createNewFile();
+				}
 			} else {
 				System.out.println("\n" + "Directory not found");
 			}
@@ -242,7 +242,51 @@ public class LockedMe {
 	}
 
 	public void deleteFileFromDir() {
+		Scanner scanner = new Scanner(System.in);
+		System.out.println("Enter the Directory path: ");
+		try {
+			String directoryPath = scanner.nextLine();
 
+			File folder = new File(directoryPath);
+
+			if (folder.isDirectory()) {
+
+				File[] fileList = folder.listFiles(File::isFile);
+
+				File[] dirList = folder.listFiles(File::isDirectory);
+
+				System.out.println("\n" + fileList.length + " files present in this folder");
+				System.out.println("\n" + dirList.length + " Sub directories present in this folder");
+				System.out.println("List the files?(yes/no)");
+				String a = scanner.nextLine();
+				if (a.equals("yes") || a.equals("y")) {
+					for (File file : fileList) {
+						System.out.println(file.getName());
+					}
+				}
+				System.out.println("\nEnter the name of file to be deleted: ");
+				String filename = scanner.nextLine();
+				File todeletefile = new File(folder, filename);
+				if (todeletefile.exists() && filename.equals(todeletefile.getName())) { // not case sensitive
+
+					if (todeletefile.delete()) {
+						System.out.println(todeletefile.getName() + " deleted\n");
+					} else {
+						System.out.println("delete operation failed");
+					}
+				} else {
+					System.out.println("File not found");
+
+				}
+			} else {
+				System.out.println("\n" + "Directory not found");
+			}
+			showFileHandlingOptions();
+		} catch (Exception e) {
+			System.out.println(e);
+		} finally {
+			scanner.close();
+		}
 	}
 
 	public void searchFileFromRootDir() {
