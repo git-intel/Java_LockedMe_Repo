@@ -8,6 +8,7 @@ public class LockedMe {
 
 	static boolean optionsAvaiable;
 	static boolean fileoptionsAvaiable;
+
 	public LockedMe() {
 
 	}
@@ -78,7 +79,7 @@ public class LockedMe {
 
 	public void listFilesInRoot() {
 		Scanner scanner = new Scanner(System.in);
-		System.out.println("Enter the file path: ");
+		System.out.println("Enter the Root Directory's path: ");
 		try {
 			String directoryPath = scanner.nextLine();
 
@@ -88,18 +89,17 @@ public class LockedMe {
 
 				File[] fileList = folder.listFiles(File::isFile);
 				File[] dirList = folder.listFiles(File::isDirectory);
-//				Arrays.sort(fileList);
 
 				System.out.println("\nTotal number of files present in the root directory: " + fileList.length);
 
 				for (File file : fileList) {
 					System.out.println(file.getName());
 				}
-				System.out.println("\n"+ dirList.length + " Sub directories found in the root directory " );
+				System.out.println("\n" + dirList.length + " Sub directories found in the root directory ");
 				for (File file : dirList) {
 					System.out.println(file.getName());
-					System.out.println("\nFiles in "+ file.getName() + " directory: " );
-					
+					System.out.println("\nFiles in " + file.getName() + " directory: ");
+
 					LockedMe dr = new LockedMe();
 					dr.listAllFilesInDir(file.getAbsolutePath());
 				}
@@ -113,6 +113,7 @@ public class LockedMe {
 		}
 
 	}
+
 	public void listAllFilesInDir(String directoryPath) {
 		try {
 			File folder = new File(directoryPath);
@@ -128,11 +129,11 @@ public class LockedMe {
 				for (File file : fileList) {
 					System.out.println(file.getName());
 				}
-				System.out.println("\n"+ dirList.length + " Sub directories found in this directory " );
+				System.out.println("\n" + dirList.length + " Sub directories found in this directory ");
 				for (File file : dirList) {
 					System.out.println(file.getName());
-					System.out.println("\nFiles in "+ file.getName() + " directory: " );
-					
+					System.out.println("\nFiles in " + file.getName() + " directory: ");
+
 					LockedMe dr = new LockedMe();
 					dr.listAllFilesInDir(file.getAbsolutePath());
 				}
@@ -143,6 +144,7 @@ public class LockedMe {
 		}
 
 	}
+
 	public static void showFileHandlingOptions() {
 		Scanner userIn = new Scanner(System.in);
 		try {
@@ -165,21 +167,22 @@ public class LockedMe {
 				try {
 					int choice;
 					choice = userIn.nextInt();
-
+					LockedMe lm = new LockedMe();
 					switch (choice) {
 					case 1:
 						System.out.println("Add a file to the existing directory list");
 						fileoptionsAvaiable = false;
-						
+						lm.addFileToDir();
 						break;
 					case 2:
 						System.out.println("Delete a user specified file from the existing directory list");
 						fileoptionsAvaiable = false;
-
+						lm.deleteFileFromDir();
 						break;
 					case 3:
 						System.out.println("Search a user specified file from the main directory");
 						fileoptionsAvaiable = false;
+						lm.searchFileFromRootDir();
 						break;
 					case 4:
 						System.out.println("back to the main menu");
@@ -201,8 +204,41 @@ public class LockedMe {
 			userIn.close();
 		}
 	}
-	public void addFileToDir() {
 
+	public void addFileToDir() {
+		Scanner scanner = new Scanner(System.in);
+		System.out.println("Enter the Directory path: ");
+		try {
+			String directoryPath = scanner.nextLine();
+
+			File folder = new File(directoryPath);
+
+			if (folder.isDirectory()) {
+
+				File[] fileList = folder.listFiles(File::isFile);
+
+				File[] dirList = folder.listFiles(File::isDirectory);
+
+				System.out.println("\n" + fileList.length + " files present in this folder");
+				System.out.println("\n" + dirList.length + " Sub directories present in this folder");
+				
+				System.out.println("Enter the file name: ");
+				String filename = scanner.nextLine();
+	            // Using file pointer creating the file. 
+	            File newfile = new File(folder,filename); 
+	  
+	            if (!newfile.exists()) { 
+	            	newfile.createNewFile();
+	            } 
+			} else {
+				System.out.println("\n" + "Directory not found");
+			}
+			showFileHandlingOptions();
+		} catch (Exception e) {
+			System.out.println(e);
+		} finally {
+			scanner.close();
+		}
 	}
 
 	public void deleteFileFromDir() {
