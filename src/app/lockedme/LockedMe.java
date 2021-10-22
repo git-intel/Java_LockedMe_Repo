@@ -291,5 +291,60 @@ public class LockedMe {
 
 	public void searchFileFromRootDir() {
 
+		Scanner scanner = new Scanner(System.in);
+		System.out.println("Enter the Directory path: ");
+		try {
+			String directoryPath = scanner.nextLine();
+
+			File folder = new File(directoryPath);
+
+			if (folder.isDirectory()) {
+
+				File[] fileList = folder.listFiles(File::isFile);
+				File[] dirList = folder.listFiles(File::isDirectory);
+
+				System.out.println("\n" + fileList.length + " files present in this folder");
+				System.out.println("\n" + dirList.length + " Sub directories present in this folder");
+				System.out.println("List the files?(yes/no)");
+				String a = scanner.nextLine();
+				if (a.equals("yes") || a.equals("y")) {
+					for (File file : fileList) {
+						System.out.println(file.getName());
+					}
+				}
+				System.out.println("\nEnter the name of file to be searched: ");
+				String filename = scanner.nextLine();
+				File tosearchfile = new File(folder, filename);
+				if (tosearchfile.exists() && filename.equals(tosearchfile.getName())) { // not case sensitive
+					System.out.println(tosearchfile.getName() + " is available in the present directory.\n");
+
+					System.out.println("Display the file? (yes/no)");
+					String ans = scanner.nextLine();
+					if (ans.equals("yes") || ans.equals("y")) {
+						Scanner sc = new Scanner(tosearchfile);
+						try {
+							while (sc.hasNextLine()) {
+								System.out.println(sc.nextLine());
+							}
+						} catch (Exception e) {
+							System.out.println(e);
+						} finally {
+							sc.close();
+						}
+					}
+
+				} else {
+					System.out.println("File not found");
+				}
+			} else {
+				System.out.println("\n" + "Directory not found");
+			}
+			showFileHandlingOptions();
+		} catch (Exception e) {
+			System.out.println(e);
+		} finally {
+			scanner.close();
+		}
+
 	}
 }
