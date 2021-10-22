@@ -2,7 +2,6 @@ package app.lockedme;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class LockedMe {
@@ -47,7 +46,7 @@ public class LockedMe {
 					case 1:
 						System.out.println("Files in directory");
 						optionsAvaiable = false;
-						lm.listFiles();
+						lm.listFilesInRoot();
 						break;
 					case 2:
 						System.out.println("File handling tools");
@@ -77,7 +76,7 @@ public class LockedMe {
 		}
 	}
 
-	public void listFiles() {
+	public void listFilesInRoot() {
 		Scanner scanner = new Scanner(System.in);
 		System.out.println("Enter the file path: ");
 		try {
@@ -88,13 +87,21 @@ public class LockedMe {
 			if (folder.isDirectory()) {
 
 				File[] fileList = folder.listFiles(File::isFile);
-//				File[] fileList = folder.listFiles(File::isDirectory); // directories
-				Arrays.sort(fileList);
+				File[] dirList = folder.listFiles(File::isDirectory);
+//				Arrays.sort(fileList);
 
-				System.out.println("\nTotal number of files present in the directory: " + fileList.length);
+				System.out.println("\nTotal number of files present in the root directory: " + fileList.length);
 
 				for (File file : fileList) {
 					System.out.println(file.getName());
+				}
+				System.out.println("\n"+ dirList.length + " Sub directories found in the root directory " );
+				for (File file : dirList) {
+					System.out.println(file.getName());
+					System.out.println("\nFiles in "+ file.getName() + " directory: " );
+					
+					LockedMe dr = new LockedMe();
+					dr.listAllFilesInDir(file.getAbsolutePath());
 				}
 
 			}
@@ -106,7 +113,36 @@ public class LockedMe {
 		}
 
 	}
+	public void listAllFilesInDir(String directoryPath) {
+		try {
+			File folder = new File(directoryPath);
 
+			if (folder.isDirectory()) {
+
+				File[] fileList = folder.listFiles(File::isFile);
+				File[] dirList = folder.listFiles(File::isDirectory);
+//				Arrays.sort(fileList);
+
+				System.out.println("\nTotal number of files present in the root directory: " + fileList.length);
+
+				for (File file : fileList) {
+					System.out.println(file.getName());
+				}
+				System.out.println("\n"+ dirList.length + " Sub directories found in this directory " );
+				for (File file : dirList) {
+					System.out.println(file.getName());
+					System.out.println("\nFiles in "+ file.getName() + " directory: " );
+					
+					LockedMe dr = new LockedMe();
+					dr.listAllFilesInDir(file.getAbsolutePath());
+				}
+
+			}
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+
+	}
 	public static void showFileHandlingOptions() {
 		Scanner userIn = new Scanner(System.in);
 		try {
