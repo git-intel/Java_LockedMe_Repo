@@ -134,6 +134,7 @@ public class LockedMe {
 					case 1:
 						System.out.println("Add a file to the existing directory list");
 						fileoptionsAvaiable = false;
+						
 						break;
 					case 2:
 						System.out.println("Delete a user specified file from the existing directory list");
@@ -164,5 +165,15 @@ public class LockedMe {
 			userIn.close();
 		}
 	}
+	public void addFileToDir() {
 
+	}
+
+	public void deleteFileFromDir() {
+
+	}
+
+	public void searchFileFromRootDir() {
+
+	}
 }
