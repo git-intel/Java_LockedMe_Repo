@@ -2,6 +2,8 @@ package app.lockedme;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Scanner;
 
 public class LockedMe {
@@ -126,8 +128,20 @@ public class LockedMe {
 
 				System.out.println("\nTotal number of files present in the root directory: " + fileList.length);
 
+				ArrayList<String> al = new ArrayList<String>();
+			
+
+				/*
+				 * Collections.sort method is sorting the elements of ArrayList in ascending
+				 * order.
+				 */
+				Collections.sort(al);
 				for (File file : fileList) {
-					System.out.println(file.getName());
+					al.add(file.getName());
+				}
+				Collections.sort(al);
+				for (String fileName : al) {
+					System.out.println(fileName);
 				}
 				System.out.println("\n" + dirList.length + " Sub directories found in this directory ");
 				for (File file : dirList) {
